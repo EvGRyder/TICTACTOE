@@ -66,7 +66,7 @@ function currentPlayerName() {
 
 function winCheck(board) {
     let currMark = (currentPlayer() == "X")? "O" : "X"
-    console.log(currMark);
+    let tit = document.querySelector("h1")
     function check(pos) {
         return board[pos].mark == currMark
     }
@@ -81,10 +81,6 @@ function winCheck(board) {
         check(0) && check(4) && check(8) || 
         check(2) && check(4) && check(6)
         ){
-        console.log("winning for " + currMark);
-        let tit = document.querySelector("h1")
         tit.textContent = `Winner is ${currentPlayerName()}`
-   }
+   } else if (turn == 9) {tit.textContent = "tie"}
 }
-console.log(gameBoard);
-
