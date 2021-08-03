@@ -14,37 +14,37 @@ function createPlayer(Name, Marker) {
 }
 
 function createSpace(pos, datakey) {
+    let mark
+
     const htmlSqr = document.querySelector(datakey)
-    htmlSqr.addEventListener("click", myMark)
-    function myMark() {
-        
-        if (this.mark) return
-        if (turn % 2) {
-            currMark = "X"
-            htmlSqr.style.backgroundImage = dunkee
-            htmlSqr.style.backgroundSize = "150px"
-            htmlSqr.style.backgroundColor = "blue"
-        } 
-        else {
-            currMark = "O"
-            htmlSqr.style.backgroundImage = shrek
-            htmlSqr.style.backgroundSize = "150px"
-        }
-        turn++
-        htmlSqr.textContent = `${currMark}`
-        
-        this.mark = currMark
+    htmlSqr.addEventListener("click", () => {
+        if(obj.mark) return
+        addMark(htmlSqr)
+        changeMark()
+        winCheck(gameBoard.board)
+
+    })
+
+    function changeMark() {
+        turn % 2 ? obj.mark = "O" : obj.mark = "X"
     }
 
-    return {
-        pos
-    }
+    const obj = { pos, mark }
+    return obj
 }
+
+function addMark(myHtml) {
+    let image
+    turn % 2 ? image = dunkee : image = shrek
+    myHtml.style.backgroundImage = image
+    myHtml.style.backgroundSize = "150px"
+    myHtml.textContent = currentPlayer()
+    turn++
+}
+
 
 const p1 = createPlayer("Bob", "X")
 const p2 = createPlayer("Alice", "O")
-p1.getPlayer()
-p2.getPlayer()
 
 const gameBoard = (() => {
     const board = [
@@ -55,5 +55,36 @@ const gameBoard = (() => {
     return { board }
 })()
 
+function currentPlayer() {
+    return turn % 2 ? player = "X" : player = "O"
+}
+let playerName
+function currentPlayerName() {
+    return turn % 2 ? playerName = "Shrek" : playerName = "Dunkee"
+}
+
+
+function winCheck(board) {
+    let currMark = (currentPlayer() == "X")? "O" : "X"
+    console.log(currMark);
+    function check(pos) {
+        return board[pos].mark == currMark
+    }
+    if (check(0) && check(1) && check(2) ||
+        check(3) && check(4) && check(5) || 
+        check(6) && check(7) && check(8) || 
+
+        check(0) && check(3) && check(6) || 
+        check(1) && check(4) && check(7) || 
+        check(2) && check(5) && check(8) || 
+
+        check(0) && check(4) && check(8) || 
+        check(2) && check(4) && check(6)
+        ){
+        console.log("winning for " + currMark);
+        let tit = document.querySelector("h1")
+        tit.textContent = `Winner is ${currentPlayerName()}`
+   }
+}
 console.log(gameBoard);
-let curr = gameBoard.board
+
