@@ -10,7 +10,22 @@ function createPlayer(Name, Marker) {
         getPlayer() {
             console.log(Name + " is playing " + Marker);
         }
+        
     }
+}
+
+const pComp = createPlayer("Computer", "X")
+const userPlayer = createPlayer("Me" ,"O")
+const playerList = [pComp, userPlayer]
+
+
+function nextPlayer() {
+    console.log(playerList[turn%2]);
+
+    let tit = document.querySelector("h1")
+    tit.textContent = `Current player is ${playerList[turn%2].Name}` 
+
+    turn++
 }
 
 function createSpace(pos, datakey) {
@@ -19,13 +34,13 @@ function createSpace(pos, datakey) {
     const htmlSqr = document.querySelector(datakey)
     htmlSqr.addEventListener("click", () => {
         if(obj.mark) return
-        addMark(htmlSqr)
-        changeMark()
+        nextPlayer()
+        drawMark(htmlSqr)
+        setMark()
         winCheck(gameBoard.board)
-
     })
 
-    function changeMark() {
+    function setMark() {
         turn % 2 ? obj.mark = "O" : obj.mark = "X"
     }
 
@@ -33,18 +48,13 @@ function createSpace(pos, datakey) {
     return obj
 }
 
-function addMark(myHtml) {
+function drawMark(myHtml) {
     let image
     turn % 2 ? image = dunkee : image = shrek
     myHtml.style.backgroundImage = image
     myHtml.style.backgroundSize = "150px"
-    myHtml.textContent = currentPlayer()
-    turn++
 }
 
-
-const p1 = createPlayer("Bob", "X")
-const p2 = createPlayer("Alice", "O")
 
 const gameBoard = (() => {
     const board = [
@@ -60,7 +70,7 @@ function currentPlayer() {
 }
 let playerName
 function currentPlayerName() {
-    return turn % 2 ? playerName = "Shrek" : playerName = "Dunkee"
+    return playerName = playerList[turn%2].Name
 }
 
 
