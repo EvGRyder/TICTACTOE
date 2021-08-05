@@ -1,32 +1,38 @@
 let turn = 0
-let fiona = 'url("img/fiona.jpeg")'
-let shrek = 'url("img/shrek.png")'
-let dunkee = 'url("img/dawnkee.jpg")'
+let fionaPic = 'url("img/fiona.jpeg")'
+let shrekPic = 'url("img/shrek.png")'
+let dunkeePic = 'url("img/dawnkee.jpg")'
 
 const headTitle = document.querySelector("h1")
 
-function createPlayer(name, pieces, marker, isComp) {
+function createPlayer(name, marker, isComp) {
     return {
         name,
-        pieces,
         marker,
         isComp
 
     }
 }
-const Dunkee = createPlayer("Donkee", "X", dunkee, true)
-const Shrek = createPlayer("Shrek" ,"O", shrek, false)
-const Fiona = createPlayer("Fiona", "X", fiona, false)
 
-let playerOne = Shrek
-let playerTwo = Fiona
+const Dunkee = createPlayer("Dunkee", dunkeePic, true)
+const Shrek = createPlayer("Shrek" , shrekPic, false)
+const Fiona = createPlayer("Fiona", fionaPic, false)
+const characterList = [Dunkee, Fiona, Shrek]
 
-const pickNameButton = document.querySelector("#pickName")
-pickNameButton.addEventListener("click", () => {
-    playerOne.name = prompt("Enter your name here")
-})
+let playerOne
+let playerTwo
 
-const playerList = [playerOne, playerTwo]
+(function playerInitialize() {
+    playerOne = Shrek
+    playerTwo = Fiona
+    playerOne.pieces = "X"
+    playerTwo.pieces = "O"
+})()
+
+let playerList = [playerOne, playerTwo]
+
+const startButton = document.querySelector("#begin")
+
 
 
 function createSpace(pos) {
@@ -43,7 +49,7 @@ function createSpace(pos) {
 
     function playOnPos() {
         if(obj.mark) return
-        turn % 2 ? obj.mark = "O" : obj.mark = "X"
+        obj.mark = currPlayer().pieces
         makePlay(posHtml, currPlayer())
     }
     
