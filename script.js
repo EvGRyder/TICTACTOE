@@ -13,7 +13,16 @@ function createPlayer(name, pieces) {
 }
 const pComp = createPlayer("Computer", "X")
 const userPlayer = createPlayer("Me" ,"O")
-const playerList = [userPlayer, pComp]
+
+let playerOne = userPlayer
+let playerTwo = pComp
+
+const pickNameButton = document.querySelector("#pickName")
+pickNameButton.addEventListener("click", () => {
+    playerOne.name = prompt("Enter your name here")
+})
+
+const playerList = [playerOne, playerTwo]
 
 
 function createSpace(pos, datakey) {
