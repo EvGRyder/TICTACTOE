@@ -2,31 +2,19 @@ let turn = 0
 let shrek = 'url("img/shrek.png")'
 let dunkee = 'url("img/dawnkee.jpg")'
 
+const headTitle = document.querySelector("h1")
 
-function createPlayer(Name, Marker) {
+function createPlayer(name, pieces) {
     return {
-        Name: Name,
-        Pieces: Marker,
-        getPlayer() {
-            console.log(Name + " is playing " + Marker);
-        }
-        
+        name,
+        pieces
+
     }
 }
-
 const pComp = createPlayer("Computer", "X")
 const userPlayer = createPlayer("Me" ,"O")
-const playerList = [pComp, userPlayer]
+const playerList = [userPlayer, pComp]
 
-
-function nextPlayer() {
-    console.log(playerList[turn%2]);
-
-    let tit = document.querySelector("h1")
-    tit.textContent = `Current player is ${playerList[turn%2].Name}` 
-
-    turn++
-}
 
 function createSpace(pos, datakey) {
     let mark
@@ -34,13 +22,12 @@ function createSpace(pos, datakey) {
     const htmlSqr = document.querySelector(datakey)
     htmlSqr.addEventListener("click", () => {
         if(obj.mark) return
-        nextPlayer()
-        drawMark(htmlSqr)
-        setMark()
+        markSpace()
+        makePlay(htmlSqr)
         winCheck(gameBoard.board)
     })
 
-    function setMark() {
+    function markSpace() {
         turn % 2 ? obj.mark = "O" : obj.mark = "X"
     }
 
@@ -48,11 +35,13 @@ function createSpace(pos, datakey) {
     return obj
 }
 
-function drawMark(myHtml) {
+function makePlay(myHtml) {
     let image
     turn % 2 ? image = dunkee : image = shrek
     myHtml.style.backgroundImage = image
     myHtml.style.backgroundSize = "150px"
+    headTitle.textContent = `Current player is ${currPlayer().name}` 
+    turn++
 }
 
 
@@ -65,18 +54,13 @@ const gameBoard = (() => {
     return { board }
 })()
 
-function currentPlayer() {
-    return turn % 2 ? player = "X" : player = "O"
-}
-let playerName
-function currentPlayerName() {
-    return playerName = playerList[turn%2].Name
+function currPlayer() {
+    return playerList[turn%2]
 }
 
 
 function winCheck(board) {
-    let currMark = (currentPlayer() == "X")? "O" : "X"
-    let tit = document.querySelector("h1")
+    let currMark = currPlayer().pieces
     function check(pos) {
         return board[pos].mark == currMark
     }
@@ -91,6 +75,6 @@ function winCheck(board) {
         check(0) && check(4) && check(8) || 
         check(2) && check(4) && check(6)
         ){
-        tit.textContent = `Winner is ${currentPlayerName()}`
-   } else if (turn == 9) {tit.textContent = "tie"}
+        headTitle.textContent = `Winner is ${currPlayer().name}`
+   } else if (turn == 9) {headTitle.textContent = "tie"}
 }
