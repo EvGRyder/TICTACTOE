@@ -1,22 +1,25 @@
 let turn = 0
+let fiona = 'url("img/fiona.jpeg")'
 let shrek = 'url("img/shrek.png")'
 let dunkee = 'url("img/dawnkee.jpg")'
 
 const headTitle = document.querySelector("h1")
 
-function createPlayer(name, pieces, isComp) {
+function createPlayer(name, pieces, marker, isComp) {
     return {
         name,
         pieces,
+        marker,
         isComp
 
     }
 }
-const pComp = createPlayer("Computer", "X", true)
-const userPlayer = createPlayer("Me" ,"O", false)
+const Dunkee = createPlayer("Donkee", "X", dunkee, true)
+const Shrek = createPlayer("Shrek" ,"O", shrek, false)
+const Fiona = createPlayer("Fiona", "X", fiona, false)
 
-let playerOne = userPlayer
-let playerTwo = pComp
+let playerOne = Shrek
+let playerTwo = Fiona
 
 const pickNameButton = document.querySelector("#pickName")
 pickNameButton.addEventListener("click", () => {
@@ -50,11 +53,10 @@ function createSpace(pos) {
 
 
 function makePlay(myHtml, player) {
-    let image
-    turn % 2 ? image = dunkee : image = shrek
+    let image = player.marker
     myHtml.style.backgroundImage = image
     myHtml.style.backgroundSize = "150px"
-    headTitle.textContent = `Current player is ${currPlayer().name}` 
+    headTitle.textContent = `Current player is ${nextPlayer().name}` 
 }
 
 function compPlay() {
@@ -95,7 +97,7 @@ function nextPlayer() {
 
 function winCheck(board) {
     if (isWon(board)){
-        headTitle.textContent = `Winner is ${nextPlayer().name}`
+        headTitle.textContent = `Winner is ${currPlayer().name}`
         turn = 9
    } else if (turn == 9) {headTitle.textContent = "tie"}
 }
